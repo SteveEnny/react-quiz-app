@@ -12,6 +12,8 @@ import Progress from "./Progress";
 import FinishedScreen from "./FinishedScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
+import { type } from "@testing-library/user-event/dist/type";
+import { questionData } from "../data/questionData";
 
 const initalState = {
   questions: [],
@@ -30,7 +32,7 @@ function reducer(state, action) {
     case "dataReceived":
       return {
         ...state,
-        questions: action.payload,
+        questions: action.payload.questions,
         status: "ready",
         secondsRemaining: state.questions.length * SECS_PER_QUESTIONS,
       };
@@ -104,10 +106,14 @@ export default function App() {
   );
 
   useEffect(function () {
-    fetch("http://localhost:9000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
+    console.log(questionData);
+    dispatch({ type: "dataReceived", payload: questionData });
+    // since I disabled the JSON API
+    // dispatch({type: "dataFe"})
+    // fetch("http://localhost:9000/questions")
+    //   .then((res) => res.json())
+    //   .then((data) => dispatch({ type: "dataReceived", payload: data }))
+    //   .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
   return (
     <div className="app">
